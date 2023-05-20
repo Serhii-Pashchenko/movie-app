@@ -62,13 +62,4 @@ h2 {
   img.card-img-top {
     width: 15rem;
   }
-  .actors {
-    grid-template-columns: repeat(1, 1fr);
-    grid-gap: 1em;
-  }
-  .actors .item {
-    grid-gap: 0.5em;
-    grid-template-columns: 4rem 1fr;
-    align-items: center;
-  }
 }/*# sourceMappingURL=App.css.map */
