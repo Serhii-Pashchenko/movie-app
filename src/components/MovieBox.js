@@ -10,7 +10,7 @@ const MovieBox = ({id, title, poster_path, genre_ids, vote_average, release_date
   const handleClose = () => setShow(false);
 
   useEffect(() => {
-    fetch(`http://api.themoviedb.org/3/movie/${id}/casts?api_key=e4016d7a28f89745bc184dfb96de3b98`)
+    fetch(`https://api.themoviedb.org/3/movie/${id}/casts?api_key=e4016d7a28f89745bc184dfb96de3b98`)
     .then(response => response.json())
     .then(data => {
       console.log(data.cast);
@@ -30,7 +30,7 @@ const MovieBox = ({id, title, poster_path, genre_ids, vote_average, release_date
               <Modal.Title></Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <img className="card-img-top" src={API_IMG + poster_path} />
+              <img className="card-img-top" src={API_IMG + poster_path} alt={title} />
               <h3>{title}</h3>
               <h4>IMDb: {vote_average}</h4>
               <h5>Genres: {genre_ids.map(genreId => {
@@ -45,7 +45,7 @@ const MovieBox = ({id, title, poster_path, genre_ids, vote_average, release_date
               <div className="actors">
                 {actors.map(actor => (
                   <div className="actors item" key={actor.id}>
-                    <img style={{width:'4rem'}} src={API_IMG + actor.profile_path} />
+                    <img style={{width:'4rem'}} src={API_IMG + actor.profile_path} alt={actor.name} />
                     <div>
                       <span style={{fontWeight:'bold'}}>{actor.name}</span><br/>
                       <span style={{fontStyle:'italic', color:'grey'}}>{actor.character}</span>
