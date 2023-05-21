@@ -13,33 +13,56 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [genres, setGenre] = useState([]);
   const [query, setQuery] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(API_URL)
-    .then(response => response.json())
-    .then(data => {
-      setMovies(data.results)
-    })
-    .catch(error => console.log(error));
+    const fetchAPI = async () => {
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        };
+        const data = await response.json();
+        setMovies(data.results);
+      } catch (error) {
+        setError(error);
+      }
+    };
 
-    fetch(API_GENRES)
-    .then(response => response.json())
-    .then(data => {
-      setGenre(data.genres);
-    })
-    .catch(error => console.log(error));
+    const fetchGenres = async () => {
+      try {
+        const response = await fetch(API_GENRES);
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        setGenre(data.genres);
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    fetchAPI();
+    fetchGenres();
   }, []);
 
   const searchMovie = async (e) => {
     e.preventDefault();
     try {
-      await fetch(API_SEARCH + query)
-      .then(response => response.json())
-      .then(data => {
-        setMovies(data.results)
-      })
-    } catch (e) {
-      console.log(e);
+      const response = await fetch(API_SEARCH + query);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+      const data = await response.json();
+      console.log(data.results);
+      if (data.results.length > 0) {
+        setMovies(data.results);
+      } else {
+        throw new Error('Sorry, no movies found :(');
+      }
+      setMovies(data.results);
+    } catch (error) {
+      setError(error);
     }
   }
 
@@ -70,17 +93,16 @@ function App() {
         </Container>
       </Navbar>
       <div>
-        {movies.length > 0 ? (
-          <div className="container">
-            <div className="grid">
-              {movies.map((movieReq) => 
-                <MovieBox key={movieReq.id} {...movieReq} genres={genres}/>
-              )}
+        { error ? <h2>{error.message}</h2> : (
+            <div className="container">
+              <div className="grid">
+                {movies.map((movieReq) => 
+                  <MovieBox key={movieReq.id} {...movieReq} genres={genres}/>
+                )}
+              </div>
             </div>
-          </div>
-        ) : (
-          <h2> Sorry, no movies found :( </h2>
-        )}
+          )
+        }
         
       </div>
     </div>

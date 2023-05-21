@@ -43,6 +43,9 @@ body {
     grid-gap: 0.5em;
     grid-template-columns: 4rem 1fr;
     align-items: center;
+    img {
+      width: 4rem;
+    }
   }
 }
 
@@ -74,5 +77,16 @@ h2{
   }
   img.card-img-top {
     width: 15rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .actors {
+    .item {
+      font-size: 10px;
+      img {
+        width: 3rem;
+      }
+    }
   }
 }
